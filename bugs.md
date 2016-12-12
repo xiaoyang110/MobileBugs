@@ -122,3 +122,35 @@
 
 ### 方案原理：
 * 版本的探测太过繁琐且不靠谱儿，所以将日期的处理使用自己的字符串的处理来进行兼容多系统版本。
+
+## 7.iphone少部分手机才微信条件下背景音乐无法自动播放
+
+### 描述：
+* 苹果为了用户着想，禁止了Autoplay和JS "onload" 加载播放。，而在微信环境下是可以自动播放的，但是少部分手机无法播放，必须要我们手动播放。
+
+### 原因：
+* 部分的IOS微信，打开有自动播放背景音乐的页面没有声音！！最头疼的是同款机子，相同的IOS系统，相同的微信版本-。-
+
+### 解决方案：
+* 微信的WeixinJSBridgeReady事件。这个是微信自带提供的事件
+
+```javascript
+    function audioAutoPlay(id){
+    var audio = document.getElementById(id);
+    audio.play();
+    document.addEventListener("WeixinJSBridgeReady", function () {
+            audio.play();
+    }, false);
+}
+
+
+```
+
+### 总结：
+
+
+* 1-支持audio的autoplay，大部分安卓机子的自带浏览器和微信，大部分的IOS微信（无需特殊解决）
+
+* 2-不支持audio的autoplay，部分的IOS微信（上述提供的解决方案）
+
+* 3-不支持audio的autoplay，部分的安卓机子的自带浏览器（比如小米，开始模仿safari）和全部的ios safari（这种只能做用户触屏时就触发播放了）
